@@ -1,0 +1,230 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- SimpleButtonFocusVisual is used to show keyboard focus around a SimpleButton control -->
+    <Style x:Key="ModernButtonFocusVisual">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border>
+                        <Rectangle Margin="2" Stroke="#60000000" StrokeThickness="1" StrokeDashArray="1 2"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <LinearGradientBrush x:Key="DefaultedBorderBrush" EndPoint="0,1" StartPoint="0,0">
+        <GradientStop Color="#777" Offset="0.0"/>
+        <GradientStop Color="#000" Offset="1.0"/>
+    </LinearGradientBrush>
+
+    <!-- NormalBrush is used as the Background for SimpleButton, SimpleRepeatButton -->
+    <SolidColorBrush x:Key="NormalBrush" Color="Transparent"/>
+    <SolidColorBrush x:Key="NormalBorderBrush" Color="Transparent"/>
+
+    <!-- MouseOverBrush is used for MouseOver in Button, Radio Button, CheckBox -->
+    <SolidColorBrush x:Key="MouseOverBrush" Color="#FFD83B01"/>
+    <SolidColorBrush x:Key="MouseOverBorderBrush" Color="#FFD83B01"/>
+    <SolidColorBrush x:Key="MouseOverForegroundBrush" Color="White"/>
+
+    <!-- PressedBrush is used for Pressed in Button, Radio Button, CheckBox -->
+    <SolidColorBrush x:Key="PressedBrush" Color="#FFD83B01"/>
+    <SolidColorBrush x:Key="PressedBorderBrush" Color="#FFD83B01"/>
+    <SolidColorBrush x:Key="PressedForegroundBrush" Color="White"/>
+
+    <!-- Modern Button - This control sets brushes on each state. Note that these brushes must be listed above since they are static resources -->
+    <Style x:Key="ModernButton" TargetType="{x:Type Button}" BasedOn="{x:Null}">
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource SimpleButtonFocusVisual}"/>
+        <Setter Property="Background" Value="{DynamicResource NormalBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource NormalBorderBrush}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+
+                    <!-- We use Grid as a root because it is easy to add more elements to customize the button -->
+                    <Grid x:Name="Grid">
+                        <Border x:Name="Border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}"/>
+
+                        <!-- Content Presenter is where the text content etc is placed by the control -->
+                        <!-- The bindings are useful so that the control can be parameterized without editing the template -->
+                        <ContentPresenter x:Name="ContentPresenter" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RecognizesAccessKey="True"/>
+                    </Grid>
+
+                    <!--Each state sets a brush on the Border in the template -->
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocused" Value="true">
+                            <Setter Property="BorderBrush" Value="{DynamicResource DefaultedBorderBrush}" TargetName="Border"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Background" Value="{DynamicResource MouseOverBrush}" TargetName="Border"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource MouseOverBorderBrush}" TargetName="Border"/>
+                            <Setter Property="TextElement.Foreground" Value="{DynamicResource MouseOverForegroundBrush}" TargetName="ContentPresenter"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter Property="Background" Value="{DynamicResource PressedBrush}" TargetName="Border"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource PressedBorderBrush}" TargetName="Border"/>
+                            <Setter Property="TextElement.Foreground" Value="{DynamicResource PressedForegroundBrush}" TargetName="ContentPresenter"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="true"/>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Background" Value="{DynamicResource DisabledBackgroundBrush}" TargetName="Border"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource DisabledBorderBrush}" TargetName="Border"/>
+                            <Setter Property="TextElement.Foreground" Value="{DynamicResource DisabledForegroundBrush}" TargetName="ContentPresenter"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Text Button - This control sets brushes on each state. Note that these brushes must be listed above since they are static resources -->
+    <Style x:Key="TextButton" TargetType="{x:Type Button}" BasedOn="{x:Null}">
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource SimpleButtonFocusVisual}"/>
+        <Setter Property="Background" Value="{DynamicResource NormalBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource NormalBorderBrush}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+
+                    <!-- We use Grid as a root because it is easy to add more elements to customize the button -->
+                    <Grid x:Name="Grid">
+                        <Border x:Name="Border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}"/>
+
+                        <!-- Content Presenter is where the text content etc is placed by the control -->
+                        <!-- The bindings are useful so that the control can be parameterized without editing the template -->
+                        <ContentPresenter x:Name="ContentPresenter" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RecognizesAccessKey="True"/>
+                    </Grid>
+
+                    <!--Each state sets a brush on the Border in the template -->
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="TextElement.Foreground" Value="White" TargetName="ContentPresenter"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter Property="TextElement.Foreground" Value="White" TargetName="ContentPresenter"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="true"/>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Background" Value="{DynamicResource DisabledBackgroundBrush}" TargetName="Border"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource DisabledBorderBrush}" TargetName="Border"/>
+                            <Setter Property="Foreground" Value="{DynamicResource DisabledForegroundBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="RegularAppButton" TargetType="Button" BasedOn="{StaticResource TextButton}">
+        <Setter Property="Background" Value="#FF333333"></Setter>
+        <Setter Property="Foreground" Value="#FF898989"></Setter>
+        <Setter Property="Height" Value="28"></Setter>
+        <Setter Property="Width" Value="75"></Setter>
+    </Style>
+
+
+
+    <SolidColorBrush x:Key="IconButtonNormalColor" Color="#FFCFCFCF" />
+    <SolidColorBrush x:Key="IconButtonMouseOverColor" Color="#FFFF5722" />
+
+    <Style x:Key="SimpleIconButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource IconButtonNormalColor}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+                        <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsDefaulted" Value="true">
+                            <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource IconButtonNormalColor}"/>
+                            <Setter Property="Foreground" Value="{StaticResource IconButtonNormalColor}" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource IconButtonMouseOverColor}"/>
+                            <Setter Property="Foreground" Value="{StaticResource IconButtonMouseOverColor}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource IconButtonMouseOverColor}"/>
+                            <Setter Property="Foreground" Value="{StaticResource IconButtonMouseOverColor}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource IconButtonNormalColor}"/>
+                            <Setter Property="Foreground" Value="{StaticResource IconButtonNormalColor}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <DataTemplate x:Key="IconButtonContentTemplate">
+        <TextBlock Text="{Binding Mode=OneWay}" FontSize="{Binding FontSize, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" FontFamily="Segoe MDL2 Assets"/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="IconButtonCustomSizeContentTemplate">
+        <TextBlock Text="{Binding Mode=OneWay}" FontFamily="Segoe MDL2 Assets"/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="IconButtonPlainContentTemplate">
+        <TextBlock Text="{Binding Mode=OneWay}" FontSize="12"/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="DataGridButtonBackLinkContentTemplate">
+        <Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="&#xE72B;" FontFamily="Segoe MDL2 Assets" FontSize="16" />
+                <TextBlock Grid.Column="1" Text="&#xE71B;" FontFamily="Segoe MDL2 Assets" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-9,1,0,-1" FontSize="16"/>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="DataGridStatsIconButtonContentTemplate">
+        <Canvas Width="16"
+                Height="16"
+                RenderTransform="0.0163282,0,0,0.01756312,-0.16491482,-0.78156116">
+            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" >
+                <Path.Data>
+                    <PathGeometry FillRule="Nonzero"
+                                  Figures="M229.5,735L229.5,735C215.8,721.3,215.8,699.1,229.5,685.4L511.9,403C525.6,389.3,547.8,389.3,561.5,403L561.5,403C575.2,416.7,575.2,438.9,561.5,452.6L279.1,735C265.5,748.7,243.2,748.7,229.5,735z" />
+                </Path.Data>
+            </Path>
+            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" >
+                <Path.Data>
+                    <PathGeometry FillRule="Nonzero"
+                                  Figures="M665.9,603.3L665.9,603.3C652.2,589.6,652.2,567.4,665.9,553.7L859.6,360C873.3,346.3,895.5,346.3,909.2,360L909.2,360C922.9,373.7,922.9,395.9,909.2,409.6L715.5,603.3C701.8,616.9,679.6,616.9,665.9,603.3z" />
+                </Path.Data>
+            </Path>
+            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" >
+                <Path.Data>
+                    <PathGeometry FillRule="Nonzero"
+                                  Figures="M714.2,603.3L714.2,603.3C700.5,617,678.3,617,664.6,603.3L513.7,452.3C500,438.6,500,416.4,513.7,402.7L513.7,402.7C527.4,389,549.6,389,563.3,402.7L714.3,553.7C727.9,567.3,727.9,589.6,714.2,603.3z" />
+                </Path.Data>
+            </Path>
+            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" >
+                <Path.Data>
+                    <PathGeometry FillRule="Nonzero"
+                                  Figures="M955,885.4L115.1,885.4C95.7,885.4,80.1,869.7,80.1,850.4L80.1,79.5C80.1,60.1,64.4,44.5,45.1,44.5L45.1,44.5C25.7,44.5,10.1,60.2,10.1,79.5L10.1,885.4C10.1,924.1,41.5,955.5,80.2,955.5L955,955.5C974.4,955.5,990,939.8,990,920.5L990,920.5C990,901.1,974.3,885.4,955,885.4z" />
+                </Path.Data>
+            </Path>
+        </Canvas>
+    </DataTemplate>
+
+
+</ResourceDictionary>

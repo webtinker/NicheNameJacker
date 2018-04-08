@@ -1,0 +1,103 @@
+﻿<UserControl x:Name="userControl"  
+             x:Class="Application.UserControls.SimpleProgress"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:Application.UserControls"
+             mc:Ignorable="d" Loaded="UserControl_Loaded"
+             IsVisibleChanged="userControl_IsVisibleChanged">
+    <UserControl.Resources>
+        <local:DivideByValueConverter x:Key="DivideByValueConverter"/>
+        <Style x:Key="EllipseStyle" TargetType="{x:Type Ellipse}">
+            <Setter Property="Height" Value="{Binding DotSize, ElementName=userControl}"/>
+            <Setter Property="Width" Value="{Binding DotSize, ElementName=userControl}"/>
+            <Setter Property="Fill" Value="Transparent"/>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform />
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <!--<VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualState x:Name="Normal"/>
+                <VisualState x:Name="Progress">
+
+                    <Storyboard RepeatBehavior="Forever" >
+                        <DoubleAnimation BeginTime="0" Storyboard.TargetName="ellipse1Scale" Storyboard.TargetProperty="ScaleX" From="1" To="1.4" Duration="0:0:0.200"/>
+                        <DoubleAnimation BeginTime="0" Storyboard.TargetName="ellipse1Scale" Storyboard.TargetProperty="ScaleY" From="1" To="1.4" Duration="0:0:0.200"/>
+                        <ColorAnimation Storyboard.TargetName="ellipse1" 
+                                        Storyboard.TargetProperty="(Path.Fill).(SolidColorBrush.Color)"
+                                        From="Gray" To="Orange" Duration="0:0:0.200"/>
+
+                        <DoubleAnimation BeginTime="0:0:0.200" Storyboard.TargetName="ellipse1Scale" Storyboard.TargetProperty="ScaleX" From="1.4" To="1" Duration="0:0:0.200">
+
+                        </DoubleAnimation>
+                        <DoubleAnimation BeginTime="0:0:0.200" Storyboard.TargetName="ellipse1Scale" Storyboard.TargetProperty="ScaleY" From="1.4" To="1" Duration="0:0:0.200">
+
+                        </DoubleAnimation>
+                        <ColorAnimation BeginTime="0:0:0.200" Storyboard.TargetName="ellipse1" 
+                                        Storyboard.TargetProperty="(Path.Fill).(SolidColorBrush.Color)"
+                                        From="Orange" To="Gray" Duration="0:0:0.200"/>
+
+
+
+                        <DoubleAnimation BeginTime="0:0:0.200" Storyboard.TargetName="ellipse2Scale" Storyboard.TargetProperty="ScaleX" From="1" To="1.4" Duration="0:0:0.200"/>
+                        <DoubleAnimation BeginTime="0:0:0.200" Storyboard.TargetName="ellipse2Scale" Storyboard.TargetProperty="ScaleY" From="1" To="1.4" Duration="0:0:0.200"/>
+                        <ColorAnimation BeginTime="0:0:0.200" Storyboard.TargetName="ellipse2" 
+                                        Storyboard.TargetProperty="(Path.Fill).(SolidColorBrush.Color)"
+                                        From="Gray" To="Orange" Duration="0:0:0.200"/>
+
+                        <DoubleAnimation BeginTime="0:0:0.400" Storyboard.TargetName="ellipse2Scale" Storyboard.TargetProperty="ScaleX" From="1.4" To="1" Duration="0:0:0.200">
+
+                        </DoubleAnimation>
+                        <DoubleAnimation BeginTime="0:0:0.400" Storyboard.TargetName="ellipse2Scale" Storyboard.TargetProperty="ScaleY" From="1.4" To="1" Duration="0:0:0.200">
+
+                        </DoubleAnimation>
+                        <ColorAnimation BeginTime="0:0:0.400" Storyboard.TargetName="ellipse2" 
+                                        Storyboard.TargetProperty="(Path.Fill).(SolidColorBrush.Color)"
+                                        From="Orange" To="Gray" Duration="0:0:0.200"/>
+
+
+                        <DoubleAnimation BeginTime="0:0:0.400" Storyboard.TargetName="ellipse3Scale" Storyboard.TargetProperty="ScaleX" From="1" To="1.4" Duration="0:0:0.200"/>
+                        <DoubleAnimation BeginTime="0:0:0.400" Storyboard.TargetName="ellipse3Scale" Storyboard.TargetProperty="ScaleY" From="1" To="1.4" Duration="0:0:0.200"/>
+                        <ColorAnimation BeginTime="0:0:0.400" Storyboard.TargetName="ellipse3" 
+                                        Storyboard.TargetProperty="(Path.Fill).(SolidColorBrush.Color)"
+                                        From="Gray" To="Orange" Duration="0:0:0.200"/>
+
+                        <DoubleAnimation BeginTime="0:0:0.600" Storyboard.TargetName="ellipse3Scale" Storyboard.TargetProperty="ScaleX" From="1.4" To="1" Duration="0:0:0.200">
+
+                        </DoubleAnimation>
+                        <DoubleAnimation BeginTime="0:0:0.600" Storyboard.TargetName="ellipse3Scale" Storyboard.TargetProperty="ScaleY" From="1.4" To="1" Duration="0:0:0.200">
+
+                        </DoubleAnimation>
+                        <ColorAnimation BeginTime="0:0:0.600" Storyboard.TargetName="ellipse3" 
+                                        Storyboard.TargetProperty="(Path.Fill).(SolidColorBrush.Color)"
+                                        From="Orange" To="Gray" Duration="0:0:0.200"/>
+
+                        <DoubleAnimation BeginTime="0:0:0.800"  Storyboard.TargetName="ellipse3Scale" Storyboard.TargetProperty="ScaleY" Duration="0:0:0.100">
+
+                        </DoubleAnimation>
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>-->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="{Binding DotSize, ConverterParameter=2.5, Converter={StaticResource DivideByValueConverter}, ElementName=userControl}"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="{Binding DotSize, ConverterParameter=2.5, Converter={StaticResource DivideByValueConverter}, ElementName=userControl}"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Ellipse Name="ellipse1" Style="{StaticResource EllipseStyle}"/>
+            <Ellipse Grid.Column="2" Name="ellipse2" Style="{StaticResource EllipseStyle}"/>
+            <Ellipse Grid.Column="4" Name="ellipse3" Style="{StaticResource EllipseStyle}"/>
+
+        </Grid>
+    </Grid>
+</UserControl>

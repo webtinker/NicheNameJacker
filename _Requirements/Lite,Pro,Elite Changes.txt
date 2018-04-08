@@ -1,0 +1,88 @@
+***********Need to make sure all three have version numbers so that we can update by versions and also it helps with the marketing.***********
+
+
+
+*****NNJ LITE Limits*****
+
+
+-Limit BOTH the number of searches and the number of results to 10. No more than 10 searches performed per day and no more than 100 results per search per web2.0 property.
+
+-Count down and display amount of searches. When count reaches zero, display message box. In message box, display links to buy PRO and Elite. http://www.nnjpro.com and http://www.nnjelite.com . Add link/button???? to "Unlock search limits for the day."
+
+-Add Button/function to "Unlock Search Limit For A Day" with paypal. Implement paypal api, confirm payment, unlock searches for a day. No limit to how many times they can unlock. Disable on Pro & Elite.
+
+
+
+
+
+
+*****Bugs/errors/new funtions*****
+
+-When "Explore" clicked, it opens Backlink box. Should display domain here. Something like "Find Backlinks for domainname.com". Also, after the search button is clicked, "Getting Backlinks in "site name" for "domainname.com".
+
+-On "start page" I currently have it set to redirect to http://www.expyred.com. When trying to use the site in the webbrowser, returns error that the browser is out of date and needs to be updated. Need to be able to allow users to login and register through the browser.
+
+-Proxies Error - "Not valid file format"??? Not sure why.
+Need users to be able to use private AND public proxies without having to enter the port number for public proxies.
+
+-In "Address" and "Port" text boxes, background is black and I can't see the address or port. Typed in manually because the file format for import was incorrect. Please make the text visible. It actually seems like you can't manually type in an ip and port as well.
+
+-Error Logging - "Send" button not working???? Send errors and bugs to bugs@nichenamejacker.com
+
+-What does "check updates" do? It should check for a newer version number on the server. 
+
+-Contact Support - open default email client and send to support@nichenamejacker.com
+
+-Results on left - "Browser" open in new window. Add tab and dedicate tab to view in, instead of user default browser.
+
+-When saving domain names or anything else, save in format that will work with excel/spreadsheet programs and format properly. The way it currently saves is not good. It's too difficult to convert for newbs. 
+
+
+-Add function for multi keyword searches. Ability to import keyword list.
+
+-Add "TURBO" button and function. When user enters keyword/keywords and clicks turbo button, "search, check availablity, blacklist & delete unavailable, display available".
+
+-Add button/function in row with domain (only if domain is available). When user clicks, check MOZ api - display "Domain Authority" "Page Authority" "Root Domain Links" "Facebook Shares" "Facebook Likes" "Tweets" "Google+1s" "Title & URL of Linking Page" "Link Anchor Text" "Spam Score" "Page Authority" "Domain Authority" in messagebox. Save/Delete. Add Buy button.
+https://moz.com/help/guides/moz-api/mozscape
+
+-Add another page/tab for "Check Expiring/Expired Domains". This page will be for DomCop Api. Add in search and display expired/expiring domain names with info. Save/edit/delete/favorite/ Buy button.
+
+-Add in functions to filter domains by extension. Ex. Search for only .com or only .net or .com, .net, and .org. Include/exclude numbers, hyphens.
+
+-Add function to search for only domains that contain exact keyword in domain.
+
+-Add button and function next to "available" domains that will check the domain in archive.org, display in new window and add button/function to download archive. **There are open source wayback machine downloaders you can use if you prefer. Make sure whatever downloader you use, has the ability to remove archive.org info and is able to rebuild.
+
+-Add Function FTP - When user has completed download of archived site, display box/message/button??? and ask if they want to upload the site to their server/hosting. If they upload, get ftp info from user, connect to server and confirm, unzip archived site and upload.
+
+-Add in proxie scraper and verifier. There are plenty of open source proxie scrapers you can use. 
+
+-Add in CNN, BBC, & LiveJournal Scrapers
+
+-Display count of blacklist domains, favorites, and available at the bottom.
+
+-Add checkbox and fucntion to "autosave" all available domains to favorites.
+
+-On Explore, on youtube scrape, grab thumbnail and display next to title. Add button and  function to download the video. 
+
+-When user favorites, change color to orange.
+
+
+Filtering:
+
+-only contains keyword
+-only top level domains
+-begin with keyword
+-ends with keyword
+-remove domains with numbers
+-remove domains with hyphens
+-remove all except .com
+
+Blacklist page:
+
+-Add search box and search function
+-Add fucntion to sort asc-desc and desc-asc
+
+
+
+

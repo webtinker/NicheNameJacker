@@ -1,0 +1,54 @@
+﻿<Window x:Class="NicheNameJacker.Controls.DomDetailerTrialDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NicheNameJacker.Controls"
+        xmlns:ViewModels="clr-namespace:NicheNameJacker.ViewModels"
+        mc:Ignorable="d"
+        Title="DomDetailer" 
+        Height="300" 
+        Width="400" 
+        ResizeMode="NoResize" 
+        WindowStartupLocation="CenterScreen" 
+        Icon="/Assets/Images/logo-sm.png" 
+        d:DataContext="{d:DesignInstance {x:Type ViewModels:DomDetailerTrialViewModel}}" 
+        AllowsTransparency="True" 
+        WindowStyle="None">
+    <Grid Background="{DynamicResource LightAppBarBackground}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Image HorizontalAlignment="Left" VerticalAlignment="Bottom" Source="/Assets/Images/logo-black.png" Grid.RowSpan="3" Width="230" Margin="12,0,0,4"/>
+
+        <TextBlock HorizontalAlignment="Center" Text="&#xE11B;" VerticalAlignment="Center" FontSize="72" FontFamily="{StaticResource SegoeUISymbol}" 
+                   Foreground="#19FFFFFF" Grid.RowSpan="2"/>
+
+        <TextBlock Grid.Row="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Info" VerticalAlignment="Top" Style="{DynamicResource TitleStyle}" 
+                   FontSize="24" Margin="12,12,0,0"/>
+
+        <StackPanel Grid.Row="1" Margin="12">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="NicheNameJacker" Style="{DynamicResource TitleStyle}" FontSize="16"/>
+                <TextBlock Text="{Binding Version}" Style="{DynamicResource CaptionStyle}"/>
+            </StackPanel>
+
+            <StackPanel Margin="0,12,0,0">
+                <TextBlock Style="{DynamicResource TitleStyle}" 
+                           FontSize="16"
+                           Text="{Binding Path=InformationText}"></TextBlock>
+                <TextBlock Style="{DynamicResource CaptionStyle}" FontSize="16">
+                    <Hyperlink NavigateUri="https://nichenamejacker.com/members/" RequestNavigate="Hyperlink_OnRequestNavigate">
+                        Buy credits
+                    </Hyperlink>
+                </TextBlock>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,12,12" HorizontalAlignment="Right">
+            <Button Content="Close" Style="{DynamicResource RegularAppButton}" Click="CloseButton_Click" IsCancel="True"/>
+        </StackPanel>
+    </Grid>
+</Window>

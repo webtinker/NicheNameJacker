@@ -1,0 +1,593 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:NicheNameJacker.Controls"
+    xmlns:ViewModels="clr-namespace:NicheNameJacker.ViewModels"
+    xmlns:controls="clr-namespace:NicheNameJacker.Controls"
+    x:Class="NicheNameJacker.Controls.RefrencesDialog"
+    mc:Ignorable="d"
+    Title="BackLinks" Height="500" Width="600" 
+    d:DataContext="{d:DesignInstance {x:Type ViewModels:RefrencesViewModel}, IsDesignTimeCreatable=True}" 
+    ResizeMode="NoResize" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None"
+    x:Name="Window">
+    <Window.Resources>
+        <DataTemplate x:Key="GenericButtonContentTemplate">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="{Binding Mode=OneWay}" FontSize="15" FontFamily="{StaticResource SegoeUISymbol}" HorizontalAlignment="Center"/>
+                <TextBlock TextWrapping="NoWrap" Text="{Binding Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" FontSize="9" FontFamily="Segoe UI" TextTrimming="CharacterEllipsis" HorizontalAlignment="Center" Margin="0,4,0,0"/>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="YouTubeLinkTemplate">
+            <Grid Margin="0,0,0,8">
+                <StackPanel>
+                    <StackPanel Margin="12,8" Orientation="Horizontal" d:LayoutOverrides="Height">
+                        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="&#xE148;" FontFamily="{StaticResource SegoeUISymbol}" Foreground="#FF4C4C4C" VerticalAlignment="Center"/>
+                        <Image Source="{Binding SearchResult.ThumbnailUrl}" Margin="12,2,0,0" MaxHeight="50" VerticalAlignment="Top">
+                        </Image>
+                        <StackPanel Margin="12,0,0,0" Width="400">
+                            <TextBlock Text="{Binding SearchResult.Title}" Style="{DynamicResource TitleStyle}" FontSize="15" d:LayoutOverrides="LeftPosition, RightPosition, TopPosition, BottomPosition" TextWrapping="NoWrap" TextTrimming="WordEllipsis"/>
+                            <TextBlock Text="{Binding SearchResult.ChannelTitle}" Style="{DynamicResource SubtitleStyle}" FontSize="12" d:LayoutOverrides="LeftPosition, RightPosition, TopPosition, BottomPosition" TextWrapping="NoWrap" TextTrimming="WordEllipsis"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding SearchResult.ViewCountString}" Style="{DynamicResource CaptionStyle}" FontSize="12" d:LayoutOverrides="LeftPosition, RightPosition, TopPosition, BottomPosition" Margin="0,0,12,0"/>
+                                <TextBlock Text="{Binding SearchResult.LikeCountString}" Style="{DynamicResource CaptionStyle}" FontSize="12" d:LayoutOverrides="LeftPosition, RightPosition, TopPosition, BottomPosition" Margin="0,0,4,0"/>
+                                <TextBlock Text="{Binding SearchResult.DislikeCountString, Mode=OneWay}" Style="{DynamicResource CaptionStyle}" FontSize="12" d:LayoutOverrides="LeftPosition, RightPosition, TopPosition, BottomPosition" Margin="0,0,12,0"/>
+                                <TextBlock Text="{Binding SearchResult.DurationString, Mode=OneWay}" Style="{DynamicResource CaptionStyle}" FontSize="12" d:LayoutOverrides="LeftPosition, RightPosition, TopPosition, BottomPosition"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <TextBlock Text="{Binding SourceAddress}" Style="{DynamicResource DescriptionStyle}" FontSize="12" Margin="40, 0, 0, 0" d:LayoutOverrides="Width, LeftPosition, RightPosition, TopPosition, BottomPosition"/>
+                    <TextBlock TextWrapping="Wrap" Text="{Binding FullAddress}" Style="{DynamicResource CaptionStyle}" FontSize="12" Margin="40, 0, 0, 0" d:LayoutOverrides="Width, LeftPosition, RightPosition, TopPosition, BottomPosition"/>
+
+                    <!--<TextBlock Text="Embed" Style="{DynamicResource TitleStyle}" FontSize="12" Margin="40, 2, 0, 0"></TextBlock>
+                    <TextBox Text="{Binding SearchResult.EmbedCode, Mode=OneWay}" FontSize="12" Margin="40, 0, 0, 0" 
+                             Foreground="{StaticResource TitleForeground}" IsReadOnly="True" TextWrapping="Wrap" BorderThickness="0" 
+                             Background="Transparent" MaxWidth="400" HorizontalAlignment="Left"></TextBox>-->
+
+                    <StackPanel Orientation="Horizontal" Margin="39, 5, 0, 0">
+                        <Button Content="View" 
+                                Background="#FF333333" 
+                                BorderBrush="{x:Null}" 
+                                Foreground="#FF898989" 
+                                Style="{DynamicResource TextButton}" 
+                                Padding="12,4" 
+                                Height="32" 
+                                Width="75" 
+                                Margin="0,0,12,0" 
+                                Command="{Binding ElementName=Window, Path=DataContext.ViewInBrowserCommand, Mode=OneWay}" 
+                                CommandParameter="{Binding SourceAddress}"/>
+
+                        <Button Content="Copy url" 
+                                Background="#FF333333" 
+                                BorderBrush="{x:Null}" 
+                                Foreground="#FF898989" 
+                                Style="{DynamicResource TextButton}" 
+                                Padding="12,4" 
+                                Height="32" 
+                                Width="75" 
+                                Margin="0,0,12,0" 
+                                Command="{Binding CopyCommand, Mode=OneWay}"/>
+
+                        <Button Content="Download" 
+                                Background="#FF333333" 
+                                BorderBrush="{x:Null}" 
+                                Foreground="#FF898989" 
+                                Style="{DynamicResource TextButton}" 
+                                Padding="12,4" 
+                                Height="32" 
+                                Width="100" 
+                                Margin="0,0,12,0" 
+                                Command="{Binding SearchResult.DownloadCommand}">
+                        </Button>
+
+                        <Button Content="Copy the embed code" 
+                                Background="#FF333333" 
+                                BorderBrush="{x:Null}" 
+                                Foreground="#FF898989" 
+                                Style="{DynamicResource TextButton}" 
+                                Padding="12,4" 
+                                Height="32"
+                                Margin="0,0,12,0"
+                                Width="150" 
+                                Command="{Binding ElementName=Window, Path=DataContext.CopyYoutubeEmbedCodeCommand, Mode=OneWay}"
+                                CommandParameter="{Binding SearchResult.Id}">
+                        </Button>
+                    </StackPanel>
+                    <ProgressBar Margin="40 10 20 0" IsIndeterminate="False" Value="{Binding SearchResult.Progress}" Visibility="{Binding SearchResult.IsDownloading, Converter={StaticResource BoolToVisibilityConverter}}" Width="350" HorizontalAlignment="Left"></ProgressBar>
+                </StackPanel>
+                <!--<Grid.ContextMenu>
+                    <ContextMenu>
+                        <Menu>
+                            <MenuItem Header="Copy" Command="{Binding CopyCommand, Mode=OneWay}"/>
+                        </Menu>
+                    </ContextMenu>
+                </Grid.ContextMenu>-->
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="RedditLinkTemplate">
+            <Grid Margin="0,0,0,8">
+                <StackPanel>
+                    <StackPanel Margin="12,8" Orientation="Horizontal" d:LayoutOverrides="Height">
+                        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="&#xE148;" FontFamily="{StaticResource SegoeUISymbol}" Foreground="#FF4C4C4C" VerticalAlignment="Center"/>
+                        <StackPanel Margin="12,0,0,0" Width="400">
+                            <TextBlock Text="{Binding SearchResult.Title}" Style="{DynamicResource TitleStyle}" FontSize="15" d:LayoutOverrides="LeftPosition, RightPosition, TopPosition, BottomPosition" TextWrapping="NoWrap" TextTrimming="WordEllipsis"/>
+                            <TextBlock Text="{Binding SourceAddress}" Style="{DynamicResource DescriptionStyle}" FontSize="12" d:LayoutOverrides="Width, LeftPosition, RightPosition, TopPosition, BottomPosition"/>
+                            <TextBlock TextWrapping="Wrap" Text="{Binding FullAddress}" Style="{DynamicResource CaptionStyle}" FontSize="12" d:LayoutOverrides="Width, LeftPosition, RightPosition, TopPosition, BottomPosition"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="39, 5, 0, 0">
+                        <Button Content="View" 
+                                Background="#FF333333" 
+                                BorderBrush="{x:Null}" 
+                                Foreground="#FF898989" 
+                                Style="{DynamicResource TextButton}" 
+                                Padding="12,4" 
+                                Height="32" 
+                                Width="75" 
+                                Margin="0,0,12,0" 
+                                Command="{Binding ElementName=Window, Path=DataContext.ViewInBrowserCommand, Mode=OneWay}" 
+                                CommandParameter="{Binding SourceAddress}"/>
+
+                        <Button Content="Copy url" 
+                                Background="#FF333333" 
+                                BorderBrush="{x:Null}" 
+                                Foreground="#FF898989" 
+                                Style="{DynamicResource TextButton}" 
+                                Padding="12,4" 
+                                Height="32" 
+                                Width="75" 
+                                Margin="0,0,12,0" 
+                                Command="{Binding CopyCommand, Mode=OneWay}"/>
+                    </StackPanel>
+                </StackPanel>
+                <!--<Grid.ContextMenu>
+                    <ContextMenu>
+                        <Menu>
+                            <MenuItem Header="Copy" Command="{Binding CopyCommand, Mode=OneWay}"/>
+                        </Menu>
+                    </ContextMenu>
+                </Grid.ContextMenu>-->
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="TumblrLinkTemplate">
+            <Grid Margin="0,0,0,8">
+                <StackPanel>
+                    <StackPanel Margin="12,8" Orientation="Horizontal" d:LayoutOverrides="Height">
+                        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="&#xE148;" FontFamily="{StaticResource SegoeUISymbol}" Foreground="#FF4C4C4C" VerticalAlignment="Center"/>
+                        <StackPanel Margin="12,0,0,0" Width="400">
+                            <TextBlock Text="{Binding SearchResult.Title}" Style="{DynamicResource TitleStyle}" FontSize="15" d:LayoutOverrides="LeftPosition, RightPosition, TopPosition, BottomPosition" TextWrapping="NoWrap" TextTrimming="WordEllipsis"/>
+                            <TextBlock Text="{Binding SourceAddress}" Style="{DynamicResource DescriptionStyle}" FontSize="12" d:LayoutOverrides="Width, LeftPosition, RightPosition, TopPosition, BottomPosition"/>
+                            <TextBlock TextWrapping="Wrap" Text="{Binding FullAddress}" Style="{DynamicResource CaptionStyle}" FontSize="12" d:LayoutOverrides="Width, LeftPosition, RightPosition, TopPosition, BottomPosition"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="39, 5, 0, 0">
+                        <Button Content="View" 
+                                Background="#FF333333" 
+                                BorderBrush="{x:Null}" 
+                                Foreground="#FF898989" 
+                                Style="{DynamicResource TextButton}" 
+                                Padding="12,4" 
+                                Height="32" 
+                                Width="75" 
+                                Margin="0,0,12,0" 
+                                Command="{Binding ElementName=Window, Path=DataContext.ViewInBrowserCommand, Mode=OneWay}" 
+                                CommandParameter="{Binding SourceAddress}"/>
+
+                        <Button Content="Copy url" 
+                                Background="#FF333333" 
+                                BorderBrush="{x:Null}" 
+                                Foreground="#FF898989" 
+                                Style="{DynamicResource TextButton}" 
+                                Padding="12,4" 
+                                Height="32" 
+                                Width="75" 
+                                Margin="0,0,12,0" 
+                                Command="{Binding CopyCommand, Mode=OneWay}"/>
+                    </StackPanel>
+                </StackPanel>
+                <!--<Grid.ContextMenu>
+                    <ContextMenu>
+                        <Menu>
+                            <MenuItem Header="Copy" Command="{Binding CopyCommand, Mode=OneWay}"/>
+                        </Menu>
+                    </ContextMenu>
+                </Grid.ContextMenu>-->
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="WikipediaLinkTemplate">
+            <Grid Margin="0,0,0,8">
+                <StackPanel>
+                    <StackPanel Margin="12,8" Orientation="Horizontal" d:LayoutOverrides="Height">
+                        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="&#xE148;" FontFamily="{StaticResource SegoeUISymbol}" Foreground="#FF4C4C4C" VerticalAlignment="Center"/>
+                        <StackPanel Margin="12,0,0,0" Width="400">
+                            <TextBlock Text="{Binding SourceAddress}" Style="{DynamicResource DescriptionStyle}" FontSize="12" d:LayoutOverrides="Width, LeftPosition, RightPosition, TopPosition, BottomPosition"/>
+                            <TextBlock TextWrapping="Wrap" Text="{Binding FullAddress}" Style="{DynamicResource CaptionStyle}" FontSize="12" d:LayoutOverrides="Width, LeftPosition, RightPosition, TopPosition, BottomPosition"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="39, 5, 0, 0">
+                        <Button Content="View" 
+                                Background="#FF333333" 
+                                BorderBrush="{x:Null}" 
+                                Foreground="#FF898989" 
+                                Style="{DynamicResource TextButton}" 
+                                Padding="12,4" 
+                                Height="32" 
+                                Width="75" 
+                                Margin="0,0,12,0" 
+                                Command="{Binding ElementName=Window, Path=DataContext.ViewInBrowserCommand, Mode=OneWay}" 
+                                CommandParameter="{Binding SourceAddress}"/>
+
+                        <Button Content="Copy url" 
+                                Background="#FF333333" 
+                                BorderBrush="{x:Null}" 
+                                Foreground="#FF898989" 
+                                Style="{DynamicResource TextButton}" 
+                                Padding="12,4" 
+                                Height="32" 
+                                Width="75" 
+                                Margin="0,0,12,0" 
+                                Command="{Binding CopyCommand, Mode=OneWay}"/>
+                    </StackPanel>
+                </StackPanel>
+                <!--<Grid.ContextMenu>
+                    <ContextMenu>
+                        <Menu>
+                            <MenuItem Header="Copy" Command="{Binding CopyCommand, Mode=OneWay}"/>
+                        </Menu>
+                    </ContextMenu>
+                </Grid.ContextMenu>-->
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="HuffpostLinkTemplate">
+            <Grid Margin="0,0,0,8">
+                <StackPanel>
+                    <StackPanel Margin="12,8" Orientation="Horizontal" d:LayoutOverrides="Height">
+                        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="&#xE148;" FontFamily="{StaticResource SegoeUISymbol}" Foreground="#FF4C4C4C" VerticalAlignment="Center"/>
+                        <StackPanel Margin="12,0,0,0" Width="400">
+                            <TextBlock Text="{Binding SourceAddress}" Style="{DynamicResource DescriptionStyle}" FontSize="12" d:LayoutOverrides="Width, LeftPosition, RightPosition, TopPosition, BottomPosition"/>
+                            <TextBlock TextWrapping="Wrap" Text="{Binding FullAddress}" Style="{DynamicResource CaptionStyle}" FontSize="12" d:LayoutOverrides="Width, LeftPosition, RightPosition, TopPosition, BottomPosition"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="39, 5, 0, 0">
+                        <Button Content="View" 
+                                Background="#FF333333" 
+                                BorderBrush="{x:Null}" 
+                                Foreground="#FF898989" 
+                                Style="{DynamicResource TextButton}" 
+                                Padding="12,4" 
+                                Height="32" 
+                                Width="75" 
+                                Margin="0,0,12,0" 
+                                Command="{Binding ElementName=Window, Path=DataContext.ViewInBrowserCommand, Mode=OneWay}" 
+                                CommandParameter="{Binding SourceAddress}"/>
+
+                        <Button Content="Copy url" 
+                                Background="#FF333333" 
+                                BorderBrush="{x:Null}" 
+                                Foreground="#FF898989" 
+                                Style="{DynamicResource TextButton}" 
+                                Padding="12,4" 
+                                Height="32" 
+                                Width="75" 
+                                Margin="0,0,12,0" 
+                                Command="{Binding CopyCommand, Mode=OneWay}"/>
+                    </StackPanel>
+                </StackPanel>
+                <!--<Grid.ContextMenu>
+                    <ContextMenu>
+                        <Menu>
+                            <MenuItem Header="Copy" Command="{Binding CopyCommand, Mode=OneWay}"/>
+                        </Menu>
+                    </ContextMenu>
+                </Grid.ContextMenu>-->
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="MashableLinkTemplate">
+            <Grid Margin="0,0,0,8">
+                <StackPanel>
+                    <StackPanel Margin="12,8" Orientation="Horizontal" d:LayoutOverrides="Height">
+                        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="&#xE148;" FontFamily="{StaticResource SegoeUISymbol}" Foreground="#FF4C4C4C" VerticalAlignment="Center"/>
+                        <StackPanel Margin="12,0,0,0" Width="400">
+                            <TextBlock Text="{Binding SourceAddress}" Style="{DynamicResource DescriptionStyle}" FontSize="12" d:LayoutOverrides="Width, LeftPosition, RightPosition, TopPosition, BottomPosition"/>
+                            <TextBlock TextWrapping="Wrap" Text="{Binding FullAddress}" Style="{DynamicResource CaptionStyle}" FontSize="12" d:LayoutOverrides="Width, LeftPosition, RightPosition, TopPosition, BottomPosition"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="39, 5, 0, 0">
+                        <Button Content="View" 
+                                Background="#FF333333" 
+                                BorderBrush="{x:Null}" 
+                                Foreground="#FF898989" 
+                                Style="{DynamicResource TextButton}" 
+                                Padding="12,4" 
+                                Height="32" 
+                                Width="75" 
+                                Margin="0,0,12,0" 
+                                Command="{Binding ElementName=Window, Path=DataContext.ViewInBrowserCommand, Mode=OneWay}" 
+                                CommandParameter="{Binding SourceAddress}"/>
+
+                        <Button Content="Copy url" 
+                                Background="#FF333333" 
+                                BorderBrush="{x:Null}" 
+                                Foreground="#FF898989" 
+                                Style="{DynamicResource TextButton}" 
+                                Padding="12,4" 
+                                Height="32" 
+                                Width="75" 
+                                Margin="0,0,12,0" 
+                                Command="{Binding CopyCommand, Mode=OneWay}"/>
+                    </StackPanel>
+                </StackPanel>
+                <!--<Grid.ContextMenu>
+                    <ContextMenu>
+                        <Menu>
+                            <MenuItem Header="Copy" Command="{Binding CopyCommand, Mode=OneWay}"/>
+                        </Menu>
+                    </ContextMenu>
+                </Grid.ContextMenu>-->
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="YahooLinkTemplate">
+            <Grid Margin="0,0,0,8">
+                <StackPanel>
+                    <StackPanel Margin="12,8" Orientation="Horizontal" d:LayoutOverrides="Height">
+                        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="&#xE148;" FontFamily="{StaticResource SegoeUISymbol}" Foreground="#FF4C4C4C" VerticalAlignment="Center"/>
+                        <StackPanel Margin="12,0,0,0" Width="400">
+                            <TextBlock Text="{Binding SourceAddress}" Style="{DynamicResource DescriptionStyle}" FontSize="12" d:LayoutOverrides="Width, LeftPosition, RightPosition, TopPosition, BottomPosition"/>
+                            <TextBlock TextWrapping="Wrap" Text="{Binding FullAddress}" Style="{DynamicResource CaptionStyle}" FontSize="12" d:LayoutOverrides="Width, LeftPosition, RightPosition, TopPosition, BottomPosition"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="39, 5, 0, 0">
+                        <Button Content="View" 
+                                Background="#FF333333" 
+                                BorderBrush="{x:Null}" 
+                                Foreground="#FF898989" 
+                                Style="{DynamicResource TextButton}" 
+                                Padding="12,4" 
+                                Height="32" 
+                                Width="75" 
+                                Margin="0,0,12,0" 
+                                Command="{Binding ElementName=Window, Path=DataContext.ViewInBrowserCommand, Mode=OneWay}" 
+                                CommandParameter="{Binding SourceAddress}"/>
+
+                        <Button Content="Copy url" 
+                                Background="#FF333333" 
+                                BorderBrush="{x:Null}" 
+                                Foreground="#FF898989" 
+                                Style="{DynamicResource TextButton}" 
+                                Padding="12,4" 
+                                Height="32" 
+                                Width="75" 
+                                Margin="0,0,12,0" 
+                                Command="{Binding CopyCommand, Mode=OneWay}"/>
+                    </StackPanel>
+                </StackPanel>
+                <!--<Grid.ContextMenu>
+                    <ContextMenu>
+                        <Menu>
+                            <MenuItem Header="Copy" Command="{Binding CopyCommand, Mode=OneWay}"/>
+                        </Menu>
+                    </ContextMenu>
+                </Grid.ContextMenu>-->
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <Grid.Background>
+            <SolidColorBrush Color="#FF171717"/>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <controls:SimpleNotificationPopup x:Name="Notification" TextColor="Orange"
+                                          Text="This is an experimental feature and may not work accurately except for the Youtube. We are aware of it and trying to find a solution. The program will be updated automatically as soon as a fix is available."/>
+
+        <Grid Margin="12,12,12,0" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+                <TextBlock TextWrapping="Wrap" Text="BackLinks" Style="{DynamicResource TitleStyle}" FontSize="24" d:LayoutOverrides="Width" HorizontalAlignment="Left"/>
+                <TextBlock x:Name="Subtitle" Grid.Column="1" Margin="0, 5, 0, 0" Text="Find backlinks for" Style="{DynamicResource SubtitleStyle}"></TextBlock>
+            </StackPanel>
+            <Grid Grid.Column="2" HorizontalAlignment="Right">
+                <TextBlock x:Name="BackLinkCount" Text="{Binding BackLinkCount}" TextWrapping="Wrap" Style="{DynamicResource DescriptionStyle}" Foreground="{DynamicResource WindowColorBrush}" VerticalAlignment="Center" FontSize="20" FontFamily="Cambria Math" Visibility="{Binding IsBackLinkCountVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            </Grid>
+
+        </Grid>
+
+        <TabControl x:Name="TabControl" Background="Transparent" BorderBrush="#00000000" SelectionChanged="TabControl_SelectionChanged" Grid.Row="2">
+            <TabItem Header="YouTube" 
+				Style="{DynamicResource ModernTabItem}"
+				Foreground="#FF898989" Padding="12,6">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock TextWrapping="Wrap" Text="&#xE007;" 
+                    	FontFamily="{StaticResource SegoeUISymbol}"
+                    	Foreground="Gray" VerticalAlignment="Center" FontSize="72" HorizontalAlignment="Center" Visibility="{Binding IsYouTubeReferencesAvailable, ConverterParameter=true, Converter={StaticResource BoolToVisibilityConverter}}" Grid.RowSpan="2"/>
+                    <ListView x:Name="YoutubeListView"
+                        ItemsSource="{Binding YouTubeRefrences}"
+						Background="Transparent" BorderBrush="Transparent" 
+						ItemTemplate="{DynamicResource YouTubeLinkTemplate}"
+                        ItemContainerStyle="{DynamicResource ModernNonFocusableListViewItem}"
+						ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+						ScrollViewer.VerticalScrollBarVisibility="Hidden"
+						ScrollViewer.IsDeferredScrollingEnabled="True" 
+                        SelectionMode="Multiple"
+                        VirtualizingPanel.ScrollUnit="Pixel"/>
+                    <TextBlock Text="{Binding TotalVideoViews, StringFormat=Total Video Views {0:N0}}" Style="{DynamicResource SubtitleStyle}" FontSize="13" Grid.Row="1" Margin="40 10 0 2" Visibility="{Binding ElementName=YoutubeListView, Path=Items.IsEmpty, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=True}"></TextBlock>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Reddit" 
+				Style="{DynamicResource ModernTabItem}" 
+				Foreground="#FF898989" Padding="12,6">
+                <Grid>
+                    <TextBlock TextWrapping="Wrap" Text="&#xE007;" 
+                    	FontFamily="{StaticResource SegoeUISymbol}"
+                    	Foreground="Gray" VerticalAlignment="Center" FontSize="72" HorizontalAlignment="Center" Visibility="{Binding IsRedditReferencesAvailable, ConverterParameter=true, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    <ListView x:Name="ItemsView2" ItemsSource="{Binding RedditRefrences}"
+						Background="Transparent" BorderBrush="Transparent" 
+						ItemTemplate="{DynamicResource RedditLinkTemplate}"
+						ItemContainerStyle="{DynamicResource ModernNonFocusableListViewItem}"
+						ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+						ScrollViewer.VerticalScrollBarVisibility="Hidden"
+						ScrollViewer.CanContentScroll="False"
+						ScrollViewer.IsDeferredScrollingEnabled="True" SelectionMode="Multiple"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Tumblr" 
+				Style="{DynamicResource ModernTabItem}"
+				Foreground="#FF898989" Padding="12,6">
+                <Grid>
+                    <TextBlock TextWrapping="Wrap" Text="&#xE007;" 
+                    	FontFamily="{StaticResource SegoeUISymbol}"
+                    	Foreground="Gray" VerticalAlignment="Center" FontSize="72" HorizontalAlignment="Center" Visibility="{Binding IsTumblrReferencesAvailable, ConverterParameter=true, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    <ListView x:Name="ItemsView3" ItemsSource="{Binding TumblrRefrences}"
+						Background="Transparent" BorderBrush="Transparent" 
+						ItemTemplate="{DynamicResource TumblrLinkTemplate}"
+						ItemContainerStyle="{DynamicResource ModernNonFocusableListViewItem}"
+						ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+						ScrollViewer.VerticalScrollBarVisibility="Hidden"
+						ScrollViewer.CanContentScroll="False"
+						ScrollViewer.IsDeferredScrollingEnabled="True" SelectionMode="Multiple"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Wikipedia" 
+				Style="{DynamicResource ModernTabItem}"
+				Foreground="#FF898989" Padding="12,6">
+                <Grid>
+                    <TextBlock TextWrapping="Wrap" Text="&#xE007;" 
+                    	FontFamily="{StaticResource SegoeUISymbol}"
+                    	Foreground="Gray" VerticalAlignment="Center" FontSize="72" HorizontalAlignment="Center" 
+                               Visibility="{Binding IsWikipediaReferencesAvailable, ConverterParameter=true, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    <ListView x:Name="ItemsView4" ItemsSource="{Binding WikipediaRefrences}"
+						Background="Transparent" BorderBrush="Transparent" 
+						ItemTemplate="{DynamicResource WikipediaLinkTemplate}"
+						ItemContainerStyle="{DynamicResource ModernNonFocusableListViewItem}"
+						ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+						ScrollViewer.VerticalScrollBarVisibility="Hidden"
+						ScrollViewer.CanContentScroll="False"
+						ScrollViewer.IsDeferredScrollingEnabled="True" SelectionMode="Multiple"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Huffington Post" 
+				Style="{DynamicResource ModernTabItem}"
+				Foreground="#FF898989" Padding="12,6">
+                <Grid>
+                    <TextBlock TextWrapping="Wrap" Text="&#xE007;" 
+                    	FontFamily="{StaticResource SegoeUISymbol}"
+                    	Foreground="Gray" VerticalAlignment="Center" FontSize="72" HorizontalAlignment="Center" 
+                               Visibility="{Binding IsHuffpostReferencesAvailable, ConverterParameter=true, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    <ListView x:Name="ItemsView5" ItemsSource="{Binding HuffpostRefrences}"
+						Background="Transparent" BorderBrush="Transparent" 
+						ItemTemplate="{DynamicResource HuffpostLinkTemplate}"
+						ItemContainerStyle="{DynamicResource ModernNonFocusableListViewItem}"
+						ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+						ScrollViewer.VerticalScrollBarVisibility="Hidden"
+						ScrollViewer.CanContentScroll="False"
+						ScrollViewer.IsDeferredScrollingEnabled="True" SelectionMode="Multiple"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Mashable" 
+				Style="{DynamicResource ModernTabItem}"
+				Foreground="#FF898989" Padding="12,6">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="423*"/>
+                        <ColumnDefinition Width="71*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock TextWrapping="Wrap" Text="&#xE007;" 
+                    	FontFamily="{StaticResource SegoeUISymbol}"
+                    	Foreground="Gray" VerticalAlignment="Center" FontSize="72" HorizontalAlignment="Center" 
+                               Visibility="{Binding IsMashableReferencesAvailable, ConverterParameter=true, Converter={StaticResource BoolToVisibilityConverter}}" Margin="211,110,140,109"/>
+                    <ListView x:Name="ItemsView6" ItemsSource="{Binding MashableRefrences}"
+						Background="Transparent" BorderBrush="Transparent" 
+						ItemTemplate="{DynamicResource MashableLinkTemplate}"
+						ItemContainerStyle="{DynamicResource ModernNonFocusableListViewItem}"
+						ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+						ScrollViewer.VerticalScrollBarVisibility="Hidden"
+						ScrollViewer.CanContentScroll="False"
+						ScrollViewer.IsDeferredScrollingEnabled="True" SelectionMode="Multiple" Grid.ColumnSpan="2"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Yahoo Answers" 
+				Style="{DynamicResource ModernTabItem}"
+				Foreground="#FF898989" Padding="12,6">
+                <Grid>
+                    <TextBlock TextWrapping="Wrap" Text="&#xE007;" 
+                    	FontFamily="{StaticResource SegoeUISymbol}"
+                    	Foreground="Gray" VerticalAlignment="Center" FontSize="72" HorizontalAlignment="Center" 
+                               Visibility="{Binding IsYahooReferencesAvailable, ConverterParameter=true, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    <ListView x:Name="ItemsView7" ItemsSource="{Binding YahooReferences}"
+						Background="Transparent" BorderBrush="Transparent" 
+						ItemTemplate="{DynamicResource YahooLinkTemplate}"
+						ItemContainerStyle="{DynamicResource ModernNonFocusableListViewItem}"
+						ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+						ScrollViewer.VerticalScrollBarVisibility="Hidden"
+						ScrollViewer.CanContentScroll="False"
+						ScrollViewer.IsDeferredScrollingEnabled="True" SelectionMode="Multiple"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <Grid x:Name="CommandRoot" Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Orientation="Horizontal" Margin="12">
+                <Button x:Name="SearchButton" 
+            		Content="Search" Background="#FF333333" 
+            		BorderBrush="{x:Null}" 
+            		Foreground="#FF898989" Style="{DynamicResource TextButton}" 
+            		Padding="12,4" 
+                        IsEnabled="{Binding Path=IsSearchEnabled}"
+            		Height="32" IsDefault="True" Width="65" Margin="0,0,12,0" Command="{Binding SearchCommand, Mode=OneWay}" CommandParameter="{Binding SelectedIndex, ElementName=TabControl}"/>
+                <Button x:Name="SaveButton" 
+            		Content="Save" Background="#FF333333" 
+            		BorderBrush="{x:Null}" 
+            		Foreground="#FF898989" Style="{DynamicResource TextButton}" 
+            		Padding="12,4"
+            		Height="32" IsDefault="True" Width="65" Margin="0,0,12,0" Command="{Binding SaveCommand, Mode=OneWay}" />
+                <Button x:Name="BuyButton" 
+            		Content="Buy" Background="#FF333333" 
+            		BorderBrush="{x:Null}" 
+            		Foreground="#FF898989" Style="{DynamicResource TextButton}" 
+            		Padding="12,4" 
+            		Width="65" IsCancel="True" Height="32" Margin="0,0,12,0" Command="{Binding BuyCommand, Mode=OneWay}"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" d:LayoutOverrides="Width" HorizontalAlignment="Right" Margin="12" Grid.Column="1">
+
+                <Button x:Name="CancelButton" 
+        			Content="Close" Background="#FF333333" 
+        			BorderBrush="{x:Null}" 
+        			Foreground="#FF898989" Style="{DynamicResource TextButton}" 
+        			Padding="12,4" Click="CancelButton_Click" 
+        			Width="75" IsCancel="True" Height="32" d:LayoutOverrides="TopPosition, BottomPosition"/>
+
+            </StackPanel>
+
+        </Grid>
+        <Grid x:Name="StatusRoot" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}" Grid.RowSpan="3" Background="#FF171717">
+            <StackPanel HorizontalAlignment="Center" Orientation="Vertical" VerticalAlignment="Center">
+                <TextBlock TextWrapping="Wrap" Text="{Binding StatusText}" Style="{DynamicResource TitleStyle}" HorizontalAlignment="Center" FontSize="15"/>
+                <TextBlock TextWrapping="Wrap" Text="This might take a while..." Style="{DynamicResource DescriptionStyle}" HorizontalAlignment="Center" FontSize="12"/>
+                <ProgressBar Height="10" Style="{DynamicResource ModernProgressBar}" d:LayoutOverrides="LeftPosition, RightPosition, TopPosition, BottomPosition" IsIndeterminate="True" Width="250" Margin="0,12,0,0"/>
+            </StackPanel>
+        </Grid>
+
+    </Grid>
+</Window>

@@ -1,0 +1,68 @@
+﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NicheNameJacker.Controls"
+        xmlns:ViewModels="clr-namespace:NicheNameJacker.ViewModels" 
+        x:Class="NicheNameJacker.Controls.AboutDialog"
+        mc:Ignorable="d"
+        Title="About" 
+        Height="300" 
+        Width="400" 
+        ResizeMode="NoResize" 
+        WindowStartupLocation="CenterScreen" 
+        Icon="/Assets/Images/logo-sm.png" 
+        d:DataContext="{d:DesignInstance {x:Type ViewModels:AboutViewModel}}" 
+        AllowsTransparency="True" 
+        WindowStyle="None">
+    <Grid Background="{DynamicResource LightAppBarBackground}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Image HorizontalAlignment="Left" VerticalAlignment="Bottom" Source="/Assets/Images/logo-black.png" Grid.RowSpan="3" Width="230" Margin="12,0,0,4"/>
+
+        <TextBlock HorizontalAlignment="Center" Text="&#xE11B;" VerticalAlignment="Center" FontSize="72" FontFamily="{StaticResource SegoeUISymbol}" Foreground="#19FFFFFF" Grid.RowSpan="2"/>
+
+        <TextBlock Grid.Row="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="About" VerticalAlignment="Top" Style="{DynamicResource TitleStyle}" FontSize="24" Margin="12,12,0,0"/>
+
+        <StackPanel Grid.Row="1" Margin="12">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="NicheNameJacker" Style="{DynamicResource TitleStyle}" FontSize="16"/>
+                <TextBlock Text="{Binding Version}" Style="{DynamicResource CaptionStyle}"/>
+            </StackPanel>
+
+            <StackPanel Margin="0,12,0,0">
+                <StackPanel Margin="0,4,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Error logging" Style="{DynamicResource TitleStyle}" FontSize="15" />
+                        <Button Grid.Column="1" Content="Save Error Log" Foreground="#FF898989" Style="{DynamicResource TextButton}" Padding="12,4" Command="{Binding SaveErrorLogCommand, Mode=OneWay}" />
+                    </Grid>
+                    <TextBlock Text="Save the log file in order to send it to support." Style="{DynamicResource CaptionStyle}" HorizontalAlignment="Left"/>
+                </StackPanel>
+
+                <StackPanel Margin="0,12,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Contact support" Style="{DynamicResource TitleStyle}" FontSize="15"/>
+                        <Button Grid.Column="1" Content="Contact"  Foreground="#FF898989" Style="{DynamicResource TextButton}" Padding="12,4" Command="{Binding ContactSupportCommand, Mode=OneWay}" />
+                    </Grid>
+                    <TextBlock Text="Need help? you can always contact us." Style="{DynamicResource CaptionStyle}" HorizontalAlignment="Left"/>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,12,12" HorizontalAlignment="Right">
+            <Button Content="Close" Style="{DynamicResource RegularAppButton}" Click="CloseButton_Click" IsCancel="True"/>
+        </StackPanel>
+    </Grid>
+</Window>

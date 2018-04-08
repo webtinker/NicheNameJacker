@@ -1,0 +1,42 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--App Brushes-->
+    <SolidColorBrush x:Key="AppBackground" Color="{DynamicResource AppBackgroundColor}"/>
+    <SolidColorBrush x:Key="AppForeground" Color="{DynamicResource AppForegroundColor}"/>
+
+    <!--AppBar Brushes-->
+    <SolidColorBrush x:Key="AppBarBackground" Color="#FF171717"/>
+    <SolidColorBrush x:Key="AppBarForeground" Color="{DynamicResource AppBarForegroundColor}"/>
+    <SolidColorBrush x:Key="LightAppBarBackground" Color="#FF222222"/>
+
+    <!--Window Brushes-->
+    <SolidColorBrush x:Key="WindowColorBrush" Color="{DynamicResource WindowColor}"/>
+    <SolidColorBrush x:Key="WindowGreenColorBrush" Color="{DynamicResource WindowGreenColor}"/>
+    
+    <!-- Used for background of ScrollViewer, TreeView, ListBox, Expander, TextBox, Tab Control -->
+    <SolidColorBrush x:Key="WindowBackgroundBrush" Color="{DynamicResource WindowBackgroundColor}"/>
+    <!-- Used for foreground of ScrollViewer, TreeView, ListBox, Expander, TextBox, Tab Control -->
+    <SolidColorBrush x:Key="WindowForegroundBrush" Color="{DynamicResource WindowForegroundColor}"/>
+
+    <!--Text Brushes-->
+    <SolidColorBrush x:Key="PageTitleForeground" Color="{DynamicResource PageTitleForegroundColor}"/>
+    <SolidColorBrush x:Key="TitleForeground" Color="{DynamicResource TitleForegroundColor}"/>
+    <SolidColorBrush x:Key="SubtitleForeground" Color="{DynamicResource SubtitleForegroundColor}"/>
+    <SolidColorBrush x:Key="DescriptionForeground" Color="{DynamicResource DescriptionForegroundColor}"/>
+    <SolidColorBrush x:Key="CaptionForeground" Color="{DynamicResource CaptionForegroundColor}"/>
+
+    <!-- SelectedBackgroundBrush is used for the Selected item in ListBoxItem, ComboBoxItem-->
+    <SolidColorBrush x:Key="SelectedBackgroundBrush" Color="#FF00AFF0"/>
+
+    <!-- Disabled Brushes are used for the Disabled look of each control -->
+    <SolidColorBrush x:Key="DisabledForegroundBrush" Color="#FF4C4C4C"/>
+    <SolidColorBrush x:Key="DisabledBackgroundBrush" Color="Transparent"/>
+    <SolidColorBrush x:Key="DisabledBorderBrush" Color="#FF4C4C4C"/>
+
+    <!-- LightBrush is used for content areas such as Menu, Tab Control background -->
+    <SolidColorBrush x:Key="LightBrush" Color="{DynamicResource LightColor}"/>
+    <SolidColorBrush x:Key="AppBarBorder" Color="#FF434343"/>
+
+</ResourceDictionary>

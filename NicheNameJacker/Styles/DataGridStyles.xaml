@@ -1,0 +1,516 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <Style x:Key="SimpleDataGridStyle" TargetType="{x:Type DataGrid}" BasedOn="{StaticResource {x:Type DataGrid}}">
+        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+        <Setter Property="BorderBrush" Value="#FF688CAF"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="RowDetailsVisibilityMode" Value="VisibleWhenSelected"/>
+        <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
+        <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type DataGrid}">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+                        <ScrollViewer x:Name="DG_ScrollViewer" Focusable="false">
+                            <ScrollViewer.Template>
+                                <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Button Command="{x:Static DataGrid.SelectAllCommand}" Focusable="false" Style="{DynamicResource {ComponentResourceKey ResourceId=DataGridSelectAllButtonStyle, TypeInTargetAssembly={x:Type DataGrid}}}" Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.All}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" Width="{Binding CellsPanelHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                        <DataGridColumnHeadersPresenter x:Name="PART_ColumnHeadersPresenter" Grid.Column="1" Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Column}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                        <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" CanContentScroll="{TemplateBinding CanContentScroll}" Grid.ColumnSpan="2" Grid.Row="1"/>
+                                        <ScrollBar x:Name="PART_VerticalScrollBar" Grid.Column="2" Maximum="{TemplateBinding ScrollableHeight}" Orientation="Vertical" Grid.Row="1" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportHeight}"/>
+                                        <Grid Grid.Column="1" Grid.Row="2">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="{Binding NonFrozenColumnsViewportHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <ScrollBar x:Name="PART_HorizontalScrollBar" Grid.Column="1" Maximum="{TemplateBinding ScrollableWidth}" Orientation="Horizontal" Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportWidth}"/>
+                                        </Grid>
+                                    </Grid>
+                                </ControlTemplate>
+                            </ScrollViewer.Template>
+                            <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                        </ScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsGrouping" Value="true"/>
+                    <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
+
+
+
+
+    <DataTemplate x:Key="DataGridItemButtonContentTemplate">
+        <Grid>
+            <TextBlock Text="{Binding Mode=OneWay}" FontSize="12" FontFamily="Segoe UI Symbol" HorizontalAlignment="Center"/>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="DataGridHeaserButtonContentTemplate">
+        <Grid>
+            <TextBlock Text="{Binding Mode=OneWay}" FontSize="16" FontFamily="Segoe UI Symbol" HorizontalAlignment="Center"/>
+        </Grid>
+    </DataTemplate>
+
+    <Style x:Key="DataGridColumnHeaderRightAlignStyle" TargetType="DataGridColumnHeader" BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
+        <Setter Property="HorizontalAlignment" Value="Right" />
+    </Style>
+
+    <Style x:Key="DataGridColumnHeaderCenterAlignStyle" TargetType="DataGridColumnHeader" BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="TextBlockTextRightStyle" TargetType="{x:Type TextBlock}">
+        <Setter Property="HorizontalAlignment" Value="Right" />
+    </Style>
+
+    <Style x:Key="DataGridRowCustomStyle" TargetType="{x:Type DataGridRow}">
+        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+        <Setter Property="SnapsToDevicePixels" Value="true"/>
+        <Setter Property="Validation.ErrorTemplate" Value="{x:Null}"/>
+        <Setter Property="ValidationErrorTemplate">
+            <Setter.Value>
+                <ControlTemplate>
+                    <TextBlock Foreground="Red" Margin="2,0,0,0" Text="!" VerticalAlignment="Center"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type DataGridRow}">
+                    <Border x:Name="DGR_Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                        <SelectiveScrollingGrid>
+                            <SelectiveScrollingGrid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </SelectiveScrollingGrid.ColumnDefinitions>
+                            <SelectiveScrollingGrid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </SelectiveScrollingGrid.RowDefinitions>
+                            <DataGridCellsPresenter Grid.Column="1" ItemsPanel="{TemplateBinding ItemsPanel}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            <DataGridDetailsPresenter Grid.Column="1" Grid.Row="1" SelectiveScrollingGrid.SelectiveScrollingOrientation="{Binding AreRowDetailsFrozen, ConverterParameter={x:Static SelectiveScrollingOrientation.Vertical}, Converter={x:Static DataGrid.RowDetailsScrollingConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" Visibility="{TemplateBinding DetailsVisibility}"/>
+                            <DataGridRowHeader Grid.RowSpan="2" SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical" Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Row}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                            <ProgressBar Grid.Row="2" Grid.ColumnSpan="2" Style="{DynamicResource ModernProgressBar}" Foreground="DeepSkyBlue"  VerticalAlignment="Top" IsIndeterminate="False" Margin="0,-2,0,0"/>
+                        </SelectiveScrollingGrid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsNewItem" Value="True">
+                <Setter Property="Margin" Value="{Binding NewItemMargin, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="DataGridCellNoSelectionEffectStyle" TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource MaterialDesignDataGridCell}">
+        <Style.Triggers>
+            <Trigger Property="UIElement.IsKeyboardFocusWithin" Value="True">
+                <Setter Property="Control.BorderBrush" Value="Transparent" />
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="DataGridCell.IsSelected" Value="True" />
+                    <Condition Property="Selector.IsSelectionActive" Value="False" />
+                </MultiTrigger.Conditions>
+                <Setter Property="Control.Foreground" Value="{DynamicResource MaterialDesignBody}" />
+                <Setter Property="Control.Background" Value="Transparent" />
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="DataGridCell.IsSelected" Value="True" />
+                    <Condition Property="Selector.IsSelectionActive" Value="True" />
+                </MultiTrigger.Conditions>
+                <Setter Property="Control.Foreground" Value="{DynamicResource MaterialDesignBody}" />
+                <Setter Property="Control.Background" Value="Transparent" />
+                <Setter Property="Control.BorderBrush" Value="Transparent"/>
+            </MultiTrigger>
+            <Trigger Property="UIElement.IsEnabled" Value="False">
+                <Setter Property="UIElement.Opacity" Value=".56" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+
+    <Style x:Key="KeyWordsDataGridCheckBoxStyle" TargetType="{x:Type CheckBox}" BasedOn="{StaticResource GlyphOutlineCheckBoxStyle}">
+        <Setter Property="Tag" Value="&#xE73E;"/>
+    </Style>
+
+    <sys:String x:Key="SegoeMore">&#xE712;</sys:String>
+
+    <Style x:Key="KeyWordsDataGridValueMoreStyle" TargetType="{x:Type TextBlock}">
+        <Setter Property="Text" Value="{StaticResource SegoeMore}"/>
+        <Setter Property="TextAlignment" Value="Right"/>
+        <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+    </Style>
+
+    <DataTemplate x:Key="DataGridForSelectedButtonContentTemplate">
+        <Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="6" FontWeight="ExtraBold" />
+                    <TextBlock Grid.Row="1" Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="6"  FontWeight="ExtraBold" Margin="0,-2,0,0"/>
+                    <TextBlock Grid.Row="2" Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="6"  FontWeight="ExtraBold" Margin="0,-3,0,0"/>
+                </Grid>
+                <Grid Grid.Column="1">
+                    <TextBlock Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" FontFamily="Segoe MDL2 Assets" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1,0,0,0" FontSize="16"/>
+                </Grid>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="DataGridSelectedDomainStatsContentTemplate">
+        <Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid Margin="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="6" FontWeight="ExtraBold" />
+                    <TextBlock Grid.Row="1" Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="6"  FontWeight="ExtraBold" Margin="0,-2,0,0"/>
+                    <TextBlock Grid.Row="2" Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="6"  FontWeight="ExtraBold" Margin="0,-3,0,0"/>
+                </Grid>
+                <ContentControl Grid.Column="1" ContentTemplate="{StaticResource DataGridStatsIconButtonContentTemplate}" Margin="1,0,0,0" />
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="KeyWordGridCheckSelectedContentTemplate">
+        <Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="6" FontWeight="ExtraBold"/>
+                    <TextBlock Grid.Row="1" Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="6"  FontWeight="ExtraBold" Margin="0,-2,0,0"/>
+                    <TextBlock Grid.Row="2" Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="6"  FontWeight="ExtraBold" Margin="0,-3,0,0"/>
+                </Grid>
+                <Grid Grid.Column="1">
+                    <TextBlock Text="&#xE768;" FontFamily="Segoe MDL2 Assets" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-3,0,0,0" FontSize="16"/>
+                </Grid>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="KeyWordGridDeleterSelectedContentTemplate">
+        <Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="6" FontWeight="ExtraBold" />
+                    <TextBlock Grid.Row="1" Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="6"  FontWeight="ExtraBold" Margin="0,-2,0,0"/>
+                    <TextBlock Grid.Row="2" Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="6"  FontWeight="ExtraBold" Margin="0,-3,0,0"/>
+                </Grid>
+                <Grid Grid.Column="1">
+                    <TextBlock Text="&#xE107;" FontFamily="Segoe MDL2 Assets" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0" FontSize="16"/>
+                </Grid>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="KeyWordGridButtonMoreContentTemplate">
+        <Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid >
+                    <TextBlock Text="&#xE712;" FontFamily="Segoe MDL2 Assets" 
+                                   VerticalAlignment="Center" Margin="0,1,0,0" 
+                                   LineHeight="8" LineStackingStrategy="BlockLineHeight"
+                                   TextAlignment="Center" HorizontalAlignment="Left">
+                        <TextBlock.LayoutTransform>
+                            <RotateTransform Angle="-90"/>
+                        </TextBlock.LayoutTransform>
+                    </TextBlock>
+                </Grid>
+                <Grid Grid.Column="2" Margin="-5,0,0,0">
+                    <TextBlock Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" 
+                               FontFamily="Segoe MDL2 Assets" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0" FontSize="16"/>
+                </Grid>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="KeyWordGridAlexaSelectedContentTemplate">
+        <Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="&#xE73E;"
+                               FontFamily="Segoe MDL2 Assets"
+                               FontSize="6"
+                               FontWeight="ExtraBold" />
+                    <TextBlock Grid.Row="1"
+                               Text="&#xE73E;"
+                               FontFamily="Segoe MDL2 Assets"
+                               FontSize="6"
+                               FontWeight="ExtraBold"
+                               Margin="0,-2,0,0" />
+                    <TextBlock Grid.Row="2"
+                               Text="&#xE73E;"
+                               FontFamily="Segoe MDL2 Assets"
+                               FontSize="6"
+                               FontWeight="ExtraBold"
+                               Margin="0,-3,0,0" />
+                </Grid>
+                <Grid Grid.Column="1">
+                    <TextBlock Text="&#xE12B;"
+                               FontFamily="Segoe MDL2 Assets"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               Margin="0"
+                               FontSize="16" />
+                </Grid>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="KeyWordGridSearchSelectedContentTemplate">
+        <Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="&#xE73E;"
+                               FontFamily="Segoe MDL2 Assets"
+                               FontSize="6"
+                               FontWeight="ExtraBold" />
+                    <TextBlock Grid.Row="1"
+                               Text="&#xE73E;"
+                               FontFamily="Segoe MDL2 Assets"
+                               FontSize="6"
+                               FontWeight="ExtraBold"
+                               Margin="0,-2,0,0" />
+                    <TextBlock Grid.Row="2"
+                               Text="&#xE73E;"
+                               FontFamily="Segoe MDL2 Assets"
+                               FontSize="6"
+                               FontWeight="ExtraBold"
+                               Margin="0,-3,0,0" />
+                </Grid>
+                <Grid Grid.Column="1">
+                    <TextBlock Text="&#xE1A3;"
+                               FontFamily="Segoe MDL2 Assets"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               Margin="0"
+                               FontSize="16" />
+                </Grid>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="KeyWordListBackLinkContentTemplate">
+        <Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="&#xE72B;" FontFamily="Segoe MDL2 Assets" FontSize="16" />
+                <TextBlock Grid.Column="1" Text="&#xE71B;" FontFamily="Segoe MDL2 Assets" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-9,1,0,-1" FontSize="16"/>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="DataGridSelectedStatsContentTemplate">
+        <Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid Margin="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="6" FontWeight="ExtraBold" />
+                    <TextBlock Grid.Row="1" Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="6"  FontWeight="ExtraBold" Margin="0,-2,0,0"/>
+                    <TextBlock Grid.Row="2" Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="6"  FontWeight="ExtraBold" Margin="0,-3,0,0"/>
+                </Grid>
+                <Grid Grid.Column="1">
+                    <TextBlock Text="&#xE895;" FontFamily="Segoe MDL2 Assets" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1,0,0,0" FontSize="16"/>
+                </Grid>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="DataGridSelectedBlockContentTemplate">
+        <Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid Margin="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="6" FontWeight="ExtraBold" />
+                    <TextBlock Grid.Row="1" Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="6"  FontWeight="ExtraBold" Margin="0,-2,0,0"/>
+                    <TextBlock Grid.Row="2" Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="6"  FontWeight="ExtraBold" Margin="0,-3,0,0"/>
+                </Grid>
+                <Grid Grid.Column="1">
+                    <TextBlock Text="&#xE25B;" FontFamily="Segoe MDL2 Assets" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1,0,0,0" FontSize="16"/>
+                </Grid>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="DataGridSelectedAlexaContentTemplate">
+        <Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid Margin="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="6" FontWeight="ExtraBold" />
+                    <TextBlock Grid.Row="1" Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="6"  FontWeight="ExtraBold" Margin="0,-2,0,0"/>
+                    <TextBlock Grid.Row="2" Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="6"  FontWeight="ExtraBold" Margin="0,-3,0,0"/>
+                </Grid>
+                <Grid Grid.Column="1">
+                    <Ellipse Height="16" Width="16">
+                        <Ellipse.Fill>
+                            <DrawingBrush Stretch="Uniform">
+                                <DrawingBrush.Drawing>
+                                    <DrawingGroup>
+                                        <DrawingGroup.Children>
+                                            <GeometryDrawing Brush="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" Geometry="M 24.25,4.75009C 35.0195,4.75009 43.75,13.4806 43.75,24.2501C 43.75,35.0196 35.0195,43.75 24.25,43.75C 13.4805,43.75 4.75005,35.0196 4.75005,24.2501C 4.75005,13.4806 13.4805,4.75009 24.25,4.75009 Z M 24.25,-3.05176e-005C 37.6429,-3.05176e-005 48.5,10.8571 48.5,24.25C 48.5,37.643 37.6429,48.5001 24.25,48.5001C 10.8571,48.5001 0,37.643 0,24.25C 0,10.8571 10.8571,-3.05176e-005 24.25,-3.05176e-005 Z " />
+                                            <GeometryDrawing Brush="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" Geometry="F1 M 36.5425,32.9551L 37.42,33.9826C 36.2,34.8976 34.8475,35.3551 33.3625,35.3551C 32.2275,35.3551 31.2725,35.0876 30.4975,34.5526C 29.7225,34.0176 29.0425,33.0751 28.4575,31.7251C 27.0025,33.1751 25.7238,34.1426 24.6213,34.6276C 23.5188,35.1126 22.195,35.3551 20.65,35.3551C 18.445,35.3551 16.7688,34.8689 15.6213,33.8964C 14.4738,32.9239 13.9,31.6776 13.9,30.1576C 13.9,27.8676 15.2113,25.9664 17.8338,24.4539C 20.4563,22.9414 23.945,21.9351 28.3,21.4351L 28.3,18.0901C 28.3,16.8951 27.8488,15.8739 26.9463,15.0264C 26.0438,14.1789 24.8975,13.7551 23.5075,13.7551C 22.2225,13.7551 21.1125,14.0351 20.1775,14.5951C 19.5125,15.0151 19.18,15.4276 19.18,15.8326C 19.18,16.0626 19.325,16.4276 19.615,16.9276C 19.965,17.5476 20.14,18.0976 20.14,18.5776C 20.14,19.2776 19.91,19.8489 19.45,20.2914C 18.99,20.7339 18.3875,20.9551 17.6425,20.9551C 16.8475,20.9551 16.185,20.7001 15.655,20.1901C 15.125,19.6801 14.86,19.0276 14.86,18.2326C 14.86,16.7476 15.7438,15.3901 17.5113,14.1601C 19.2788,12.9301 21.5975,12.3151 24.4675,12.3151C 27.1125,12.3151 29.1325,12.8826 30.5275,14.0176C 31.9225,15.1676 32.62,16.5601 32.62,18.1951L 32.62,30.2926C 32.62,31.3626 32.7975,32.1501 33.1525,32.6551C 33.5125,33.1751 33.9775,33.4351 34.5475,33.4351C 35.1775,33.4351 35.8425,33.2751 36.5425,32.9551 Z M 28.3,22.8751C 24.41,23.4501 21.655,24.3876 20.035,25.6876C 18.825,26.6726 18.22,28.0676 18.22,29.8726C 18.22,31.1376 18.5338,32.1276 19.1613,32.8426C 19.7888,33.5576 20.6075,33.9151 21.6175,33.9151C 23.4225,33.9151 24.9875,33.1801 26.3125,31.7101C 27.6375,30.2401 28.3,28.3951 28.3,26.1751L 28.3,22.8751 Z "/>
+                                        </DrawingGroup.Children>
+                                    </DrawingGroup>
+                                </DrawingBrush.Drawing>
+                            </DrawingBrush>
+                        </Ellipse.Fill>
+                    </Ellipse>
+                </Grid>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <!--<DataTemplate x:Key="DataGridSelectedDomainStatsContentTemplate">
+        <Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid Margin="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="&#xE73E;"
+                               FontFamily="Segoe MDL2 Assets"
+                               FontSize="6"
+                               FontWeight="ExtraBold" />
+                    <TextBlock Grid.Row="1"
+                               Text="&#xE73E;"
+                               FontFamily="Segoe MDL2 Assets"
+                               FontSize="6"
+                               FontWeight="ExtraBold"
+                               Margin="0,-2,0,0" />
+                    <TextBlock Grid.Row="2"
+                               Text="&#xE73E;"
+                               FontFamily="Segoe MDL2 Assets"
+                               FontSize="6"
+                               FontWeight="ExtraBold"
+                               Margin="0,-3,0,0" />
+                </Grid>
+                <Grid Grid.Column="1">
+                    <TextBlock Text="&#xE1CA;"
+                               FontFamily="Segoe MDL2 Assets"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               Margin="1,0,0,0"
+                               FontSize="16" />
+                </Grid>
+            </Grid>
+        </Grid>
+    </DataTemplate>-->
+
+
+</ResourceDictionary>

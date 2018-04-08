@@ -1,0 +1,77 @@
+﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        x:Class="NicheNameJacker.Controls.SettingsDialog"
+        mc:Ignorable="d"
+        Title="Settings" 
+        Height="605" 
+        Width="450" 
+        ResizeMode="NoResize" 
+        WindowStartupLocation="CenterScreen" 
+        Icon="/Assets/Images/logo-sm.png"
+        AllowsTransparency="True" 
+        WindowStyle="None">
+    <Grid Background="{DynamicResource LightAppBarBackground}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="&#xE115;" VerticalAlignment="Center" FontSize="72" FontFamily="{StaticResource SegoeUISymbol}" Foreground="#19FFFFFF" Grid.RowSpan="2"/>
+        <TextBlock Grid.Row="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Settings" Style="{DynamicResource TitleStyle}" Margin="12,12,0,0" FontSize="24"/>
+        <StackPanel Grid.Row="1" Margin="12" Grid.RowSpan="2">
+            <TextBlock Text="Registration Key" FontSize="15" Style="{DynamicResource TitleStyle}"></TextBlock>
+            <PasswordBox x:Name="RegistrationKeyBox" Margin="0 7 0 0" Style="{DynamicResource ModernPasswordBox}"></PasswordBox>
+            <ProgressBar x:Name="AccountProgressBar" Visibility="Hidden" IsIndeterminate="True" Margin="0 0 0 7" Style="{DynamicResource ModernProgressBar}"></ProgressBar>
+            <TextBlock Text="By providing your Registration Key you can update your membership plan" FontSize="13" Style="{DynamicResource TitleStyle}"></TextBlock>
+            <Button x:Name="VerifyButton" Click="VerifyButton_Click" Content="Verify" HorizontalAlignment="Left" Margin="0 10 0 0" Style="{DynamicResource RegularAppButton}"></Button>
+            <TextBlock x:Name="VerificationStatusText" Style="{DynamicResource TitleStyle}" FontSize="14.5" Margin="0 0 0 15" Foreground="{DynamicResource WindowColorBrush}"></TextBlock>
+
+            <!--<TextBlock Text="DomDetailer Key" Style="{DynamicResource TitleStyle}" FontSize="15"></TextBlock>
+            <PasswordBox x:Name="DomDetalierKeyTextBox" Margin="0 7" Style="{DynamicResource ModernPasswordBox}"></PasswordBox>
+            <TextBlock Style="{DynamicResource TitleStyle}" FontSize="14.5" Margin="0 0 0 15" Foreground="{DynamicResource WindowColorBrush}" Text="Please provide the DomDetailer key to get their stats"></TextBlock>-->
+            
+            <TextBlock Text="YouTube Api Key" Style="{DynamicResource TitleStyle}" FontSize="15"></TextBlock>
+            <TextBox x:Name="YouTubeApiKeyTextBox" Margin="0 7" Style="{DynamicResource ModernTextBox}" ToolTip="Paste your api key here"></TextBox>
+            <!--<TextBlock Style="{DynamicResource TitleStyle}" FontSize="14.5" Margin="0 0 0 15" Foreground="{DynamicResource WindowColorBrush}">
+                How to obtain api key: <LineBreak/><Hyperlink RequestNavigate="Hyperlink_OnRequestNavigate" NavigateUri="https://developers.google.com/youtube/registering_an_application">https://developers.google.com/youtube/registering_an_application</Hyperlink>
+            </TextBlock>-->
+            <TextBlock Style="{DynamicResource TitleStyle}" FontSize="14.5" Margin="0 0 0 15" Foreground="{DynamicResource WindowColorBrush}">
+                <LineBreak/><Hyperlink RequestNavigate="Hyperlink_OnRequestNavigate" NavigateUri="../Assets/Docs/tutorial.pdf">How to obtain api key</Hyperlink>
+            </TextBlock>
+
+            <TextBlock Text="YouTube Client ID" Style="{DynamicResource TitleStyle}" FontSize="15"></TextBlock>
+            <TextBox x:Name="YouTubeClientIdTextBox" Margin="0 7" Style="{DynamicResource ModernTextBox}" ToolTip="Paste your client id here"></TextBox>
+
+            
+
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Left" Name="AutoOptionPanel">
+            <CheckBox Content="Get Auto Metrics for avaiable domains" Name="AutoMetrics"
+                             ToolTipService.ShowOnDisabled="True"
+                             Foreground="White"
+                      Margin="10 12 12 1"
+                      >
+
+            </CheckBox>
+        </StackPanel>
+        <StackPanel  Orientation="Horizontal" Grid.Row="3" HorizontalAlignment="Left" Name="AutoDeletePanel">
+            <CheckBox Content="Automatically delete/blacklist unavailable" Name="AutoDel"
+                             ToolTipService.ShowOnDisabled="True"
+                             Foreground="White"
+                      Margin="10 12 12 12"
+                      >
+
+            </CheckBox>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal"  Grid.Row="4" Margin="0,0,12,12" HorizontalAlignment="Right" >
+            <Button x:Name="SaveButton" Content="Save" Click="SaveButton_Click" IsDefault="True" Margin="0,0,4,0" Style="{DynamicResource RegularAppButton}"/>
+            <Button x:Name="CancelButton" Content="Cancel" Click="CancelButton_Click" IsCancel="True" Style="{DynamicResource RegularAppButton}"/>
+        </StackPanel>
+    </Grid>
+</Window>
